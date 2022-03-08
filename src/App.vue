@@ -5,20 +5,26 @@ const header = ref("Shopping List App");
 const editing = ref(false);
 
 const items = ref([
-  // {
-  //   id: 1,
-  //   label: "10 party hats",
-  // },
+  {
+    id: 1,
+    label: "10 party hats",
+    purchased: true,
+    highPriority: false,
+  },
 
-  // {
-  //   id: 2,
-  //   label: "2 board games",
-  // },
+  {
+    id: 2,
+    label: "2 board games",
+    purchased: true,
+    highPriority: false,
+  },
 
-  // {
-  //   id: 3,
-  //   label: "20 cups",
-  // },
+  {
+    id: 3,
+    label: "20 cups",
+    purchased: false,
+    highPriority: true,
+  },
 ]);
 
 const newItem = ref("");
@@ -28,14 +34,21 @@ const saveItem = () => {
   items.value.push({
     id: items.value.length + 1,
     label: newItem.value,
+    highPriority: newItemHighPriority.value,
   });
 
   newItem.value = "";
+  newItemHighPriority.value = ""
 };
 
 const doEdit = (e) => {
   editing.value = e;
   newItem.value = "";
+  newItemHighPriority.value = ""
+};
+
+const togglePurchased = (item) => {
+  item.purchased = !item.purchased;
 };
 </script>
 
@@ -90,10 +103,16 @@ const doEdit = (e) => {
 
   <ul>
     <li
-      v-for="({id, label}, index) in items"
-      :key="id"
+      v-for="(item, index) in items"
+      :key="item.id"
+      :class="{
+        strikeout: item.purchased,
+        priority: item.highPriority,
+      }"
+      class="static-class"
+      @click="togglePurchased(item)"
     >
-      {{ label }}
+      {{ item.label }}
     </li>
   </ul>
 
