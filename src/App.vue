@@ -2,22 +2,23 @@
 import { ref } from "vue";
 
 const header = ref("Shopping List App");
+const editing = ref(false);
 
 const items = ref([
-  {
-    id: 1,
-    label: "10 party hats",
-  },
+  // {
+  //   id: 1,
+  //   label: "10 party hats",
+  // },
 
-  {
-    id: 2,
-    label: "2 board games",
-  },
+  // {
+  //   id: 2,
+  //   label: "2 board games",
+  // },
 
-  {
-    id: 3,
-    label: "20 cups",
-  },
+  // {
+  //   id: 3,
+  //   label: "20 cups",
+  // },
 ]);
 
 const newItem = ref("");
@@ -31,12 +32,36 @@ const saveItem = () => {
 
   newItem.value = "";
 };
+
+const doEdit = (e) => {
+  editing.value = e;
+  newItem.value = "";
+};
 </script>
 
 <template>
-  <h1>{{ header }}</h1>
+  <div class="header">
+    <h1>{{ header }}</h1>
+
+    <button
+      v-if="editing"
+      class="btn"
+      @click="doEdit(false)"
+    >
+      Cancel
+    </button>
+
+    <button
+      v-else
+      class="btn btn-primary"
+      @click="doEdit(true)"
+    >
+      Add Item
+    </button>
+  </div>
 
   <form
+    v-if="editing"
     class="add-item-form"
     @submit.prevent="saveItem"
   >
@@ -68,4 +93,8 @@ const saveItem = () => {
       {{ label }}
     </li>
   </ul>
+
+  <p v-if="!items.length">
+    Nothing to see here
+  </p>
 </template>
